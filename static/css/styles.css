@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #000;
+    width: 300px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px;
+    background-color: #4297c8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #357a9d;
+}
+
+#prediction-result {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #4297c8;
+}
+
+
+
+
+
+/* Reset some default styles */
+body, h1, h2, p, button, input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* Custom form container styling */
+.custom-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom label styling */
+.custom-label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* Custom file input styling */
+.custom-file-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: transparent; /* Set a transparent background */
+    border: 1px solid #3498db;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Custom button styling */
+.custom-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-btn:hover {
+    background-color: #27ae60;
+}

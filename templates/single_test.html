@@ -1,0 +1,126 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<style>
+  .predictions-div {
+    background-color: #f8f9fa; /* Light gray background color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding inside the predictions div */
+    margin-top: 20px; /* Margin from the top */
+    font-size: 16px; /* Font size for predictions */
+  }
+
+  .prediction-item {
+    margin-bottom: 5px; /* Margin between prediction items */
+  }
+
+  .prediction-label {
+    font-weight: bold; /* Bold font for prediction labels */
+    color: #333; /* Dark text color */
+  }
+
+  .prediction-value {
+    color: #007bff; /* Blue color for prediction values */
+  }
+</style>
+<form action="/predict" method="post" id="single_test_form">
+  <!-- First Row -->
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Hidden input for the hardcoded country -->
+      <input type="hidden" id="area" name="area" value="Zimbabwe">
+      
+      <!-- Crop selection -->
+      <div class="form-group">
+        <label for="crop">Crop:</label>
+        <select class="form-control" id="item" name="item" required>
+          <option value="" disabled selected>Select a crop</option>
+          {% for crop in crops %}
+              <option value="{{ crop }}">{{ crop }}</option>
+          {% endfor %}
+        </select>
+        <small class="form-text text-muted" style="color: #f8f9fa;;">.</small>
+
+      </div>
+      
+      <!-- Average Temperature -->
+      <div class="form-group">
+        <label for="avg_temp">Average Temperature (°C):</label>
+        <input type="number" class="form-control" id="avg_temp" name="avg_temp" min="1.3" max="30.65" step="0.01" required>
+        <small class="form-text text-muted">Enter a value between 1.3 and 30.65 °C.</small>
+      </div>
+    </div>
+
+    <!-- Second Column with Average Rainfall and Pesticides -->
+    <div class="col-md-6">
+      <!-- Average Rainfall -->
+      <div class="form-group">
+        <label for="average_rain_fall_mm_per_year">Average Rainfall (mm/year):</label>
+        <input type="number" class="form-control" id="average_rain_fall_mm_per_year" name="average_rain_fall_mm_per_year" min="51.0" max="3240.0" step="0.1" required>
+        <small class="form-text text-muted">Enter a value between 51.0 and 3240.0 mm/year.</small>
+      </div>
+      
+      <!-- Pesticides -->
+      <div class="form-group">
+        <label for="pesticides_tonnes">Pesticides (Tonnes):</label>
+        <input type="number" class="form-control" id="pesticides_tonnes" name="pesticides_tonnes" min="0.04" max="367778.0" step="0.01" required>
+        <small class="form-text text-muted">Enter a value between 0.04 and 367778.0 tonnes.</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+    </div>
+  </div>
+</form>
+
+
+<div id="predictionResult" class="predictions-div" style="display: none;">
+  <div class="prediction-item">
+    <span class="prediction-label">Predicted Yield:</span>
+    <span class="prediction-value" id="predictionValue"></span>&nbsp; hg/ha</span>
+  </div>
+</div>
+
+<!-- JavaScript for handling form submission and displaying predictions -->
+<script>
+  document.getElementById('single_test_form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = {
+      Area: document.getElementById('area').value,
+      Item: document.getElementById('item').value,
+      average_rain_fall_mm_per_year: parseFloat(document.getElementById('average_rain_fall_mm_per_year').value),
+      avg_temp: parseFloat(document.getElementById('avg_temp').value),
+      pesticides_tonnes: parseFloat(document.getElementById('pesticides_tonnes').value)
+    };
+
+    try {
+      const response = await fetch('/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        document.getElementById('predictionValue').textContent = result.prediction.toFixed(2);
+        document.getElementById('predictionResult').style.display = 'block';
+      } else {
+        const error = await response.json();
+        alert('Error: ' + error.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An unexpected error occurred.');
+    }
+  });
+</script>
+
+{% endblock %}
